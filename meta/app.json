@@ -1,0 +1,63 @@
+{
+  "cssFiles": [],
+  "dataSources": [
+    "MT"
+  ],
+  "generator": "@radzen/blazor-server",
+  "https": false,
+  "ignore": [
+    ""
+  ],
+  "javaScriptFiles": [],
+  "layouts": [
+    "Login",
+    "Main"
+  ],
+  "logo": "",
+  "name": "MultiTenancy",
+  "namespaces": [],
+  "navigation": [
+    "Main"
+  ],
+  "pages": [
+    "Login",
+    "Application Users",
+    "Application Roles",
+    "Register Application User",
+    "Add Application Role",
+    "Edit Application User",
+    "Add Application User",
+    "Profile",
+    "Unauthorized",
+    "Application Tenants",
+    "Add Application Tenant",
+    "Edit Application Tenant",
+    "Main"
+  ],
+  "port": 8000,
+  "security": {
+    "autoGeneratePages": true,
+    "dataSource": "MT",
+    "duration": 5,
+    "emailConfirmation": false,
+    "layout": "Main",
+    "loginLayout": "Login",
+    "loginPage": "Login",
+    "multiTenancy": true,
+    "overwriteExistingPages": true,
+    "provider": "default",
+    "sessionRefresh": false,
+    "smtpFrom": "",
+    "smtpPassword": "",
+    "smtpSSL": false,
+    "smtpServer": "",
+    "smtpUser": ""
+  },
+  "serverLang": "cs",
+  "serverPort": 5000,
+  "serverProject": true,
+  "serverVersion": "6",
+  "startPage": "Main",
+  "theme": "default",
+  "title": "MultiTenancy"
+}

@@ -1,0 +1,43 @@
+﻿@page "/application-tenants"
+@layout MainLayout
+@inherits MultiTenancy.Pages.ApplicationTenantsComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Microsoft.AspNetCore.Identity;
+@using MultiTenancy.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+<PageTitle>Application Tenants</PageTitle>
+<RadzenContent Container="main">
+  <ChildContent>
+    <RadzenHeading Size="H1" Text="Tenants">
+    </RadzenHeading>
+    <div class="row">
+      <div class="col-md-12">
+        <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@Button0Click">
+        </RadzenButton>
+        <RadzenDataGrid @ref="grid0" AllowFiltering="true" AllowPaging="true" AllowSorting="true" Data="@tenants" TItem="ApplicationTenant" RowRender="@Grid0RowRender" RowSelect="@Grid0RowSelect">
+          <Columns>
+            <RadzenDataGridColumn TItem="ApplicationTenant" Property="Name" Title="Name">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="ApplicationTenant" Property="Hosts" Title="Hosts">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="ApplicationTenant" Filterable="false" Sortable="false" Width="60px">
+              <Template Context="applicationTenant">
+                <RadzenButton Disabled="@(applicationTenant.Id == Globals.Tenant?.Id)" Icon="account_balance_wallet" Click="@((args) =>Button1Click(args, applicationTenant))" title="Switch application to this tenant" @onclick:stopPropagation="true">
+                </RadzenButton>
+              </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="ApplicationTenant" Filterable="false" Sortable="false" Width="70px">
+              <Template Context="applicationTenant">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, applicationTenant))" @onclick:stopPropagation="true">
+                </RadzenButton>
+              </Template>
+            </RadzenDataGridColumn>
+          </Columns>
+        </RadzenDataGrid>
+      </div>
+    </div>
+  </ChildContent>
+</RadzenContent>

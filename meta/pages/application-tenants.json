@@ -1,0 +1,227 @@
+{
+  "access": [
+    "Authenticated"
+  ],
+  "components": [
+    {
+      "type": "content",
+      "container": "main",
+      "components": [
+        {
+          "type": "heading",
+          "name": "pageTitle",
+          "size": "H1",
+          "text": "Tenants"
+        },
+        {
+          "type": "row",
+          "components": [
+            {
+              "type": "col",
+              "class": "col-md-12",
+              "components": [
+                {
+                  "icon": "add_circle_outline",
+                  "name": "button0",
+                  "style": {
+                    "marginBottom": "10px"
+                  },
+                  "text": "Add",
+                  "type": "button",
+                  "events": {
+                    "click": [
+                      {
+                        "path": "add-application-tenant",
+                        "type": "popup",
+                        "then": [
+                          {
+                            "code": "await Load();",
+                            "type": "execute"
+                          },
+                          {
+                            "code": "${await grid0.Reload()}",
+                            "type": "execute"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "grid0",
+                  "allowFiltering": true,
+                  "allowPaging": true,
+                  "allowSorting": true,
+                  "data": "${tenants}",
+                  "events": {
+                    "loadData": [],
+                    "rowRender": [
+                      {
+                        "code": "args.Attributes.Add(\"style\", $\"font-weight: {(args.Data.Id == Globals.Tenant?.Id ? \"bold\" : \"normal\")};\");",
+                        "condition": "",
+                        "type": "execute"
+                      }
+                    ],
+                    "rowSelect": [
+                      {
+                        "parameters": [
+                          {
+                            "name": "Id",
+                            "value": "${event.Id}"
+                          }
+                        ],
+                        "path": "edit-application-tenant",
+                        "type": "popup",
+                        "argType": "ApplicationTenant",
+                        "then": [
+                          {
+                            "code": "await Load();",
+                            "type": "execute"
+                          },
+                          {
+                            "code": "${await grid0.Reload()}",
+                            "type": "execute"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "title": "",
+                  "columns": [
+                    {
+                      "property": "Name",
+                      "title": "Name"
+                    },
+                    {
+                      "property": "Hosts",
+                      "title": "Hosts"
+                    },
+                    {
+                      "filterable": false,
+                      "sortable": false,
+                      "template": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "title",
+                              "value": "Switch application to this tenant"
+                            },
+                            {
+                              "name": "@onclick:stopPropagation",
+                              "value": "true"
+                            }
+                          ],
+                          "disabled": "${data.Id == Globals.Tenant?.Id}",
+                          "events": {
+                            "click": [
+                              {
+                                "global": true,
+                                "name": "Tenant",
+                                "type": "set",
+                                "value": "${data}",
+                                "valueType": "ApplicationTenant"
+                              }
+                            ]
+                          },
+                          "icon": "account_balance_wallet",
+                          "name": "button1",
+                          "text": "",
+                          "type": "button"
+                        }
+                      ],
+                      "width": "60px"
+                    },
+                    {
+                      "filterable": false,
+                      "sortable": false,
+                      "width": "70px",
+                      "template": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "@onclick:stopPropagation",
+                              "value": true
+                            }
+                          ],
+                          "buttonStyle": "danger",
+                          "icon": "close",
+                          "name": "gridDeleteButton",
+                          "text": "",
+                          "size": "sm",
+                          "type": "button",
+                          "events": {
+                            "click": [
+                              {
+                                "error": [
+                                  {
+                                    "detail": "Unable to delete tenant",
+                                    "severity": "error",
+                                    "summary": "Error",
+                                    "type": "notify"
+                                  }
+                                ],
+                                "name": "Security.deleteTenant",
+                                "parameters": [
+                                  {
+                                    "name": "id",
+                                    "value": "${data.Id}"
+                                  }
+                                ],
+                                "then": [
+                                  {
+                                    "code": "await Load();",
+                                    "type": "execute"
+                                  },
+                                  {
+                                    "code": "await grid0.Reload();",
+                                    "condition": "result != null",
+                                    "type": "execute"
+                                  }
+                                ],
+                                "type": "invoke",
+                                "argType": "ApplicationTenant"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "type": "datagrid",
+                  "itemType": "ApplicationTenant"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "events": {
+    "load": [
+      {
+        "name": "Security.getTenants",
+        "parameters": [],
+        "then": [
+          {
+            "name": "tenants",
+            "type": "set",
+            "value": "${result.value}",
+            "valueType": "IEnumerable<ApplicationTenant>"
+          },
+          {
+            "condition": "Globals.Tenant == null && tenants != null && tenants.Any()",
+            "global": true,
+            "name": "Tenant",
+            "type": "set",
+            "value": "tenants.FirstOrDefault()",
+            "valueType": "ApplicationTenant"
+          }
+        ],
+        "type": "invoke"
+      }
+    ]
+  },
+  "name": "Application Tenants",
+  "layout": "Main"
+}

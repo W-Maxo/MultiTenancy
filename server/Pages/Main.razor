@@ -1,0 +1,18 @@
+﻿@page "/"
+@page "/main"
+@layout MainLayout
+@inherits MultiTenancy.Pages.MainComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Microsoft.AspNetCore.Identity;
+@using MultiTenancy.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+<PageTitle>Main</PageTitle>
+<RadzenContent Container="main">
+  <ChildContent>
+    <RadzenHeading Size="H1" Text="Main">
+    </RadzenHeading>
+  </ChildContent>
+</RadzenContent>

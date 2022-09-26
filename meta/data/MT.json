@@ -1,0 +1,15 @@
+{
+  "info": {
+    "title": "MT",
+    "x-type": "odata",
+    "x-connector": "postgresql",
+    "x-concurrency": true
+  },
+  "definitions": {},
+  "paths": {},
+  "basePath": "/odata/MT",
+  "host": "localhost:5000",
+  "schemes": [
+    "http"
+  ]
+}

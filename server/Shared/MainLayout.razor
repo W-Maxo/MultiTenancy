@@ -1,0 +1,75 @@
+﻿@inherits MultiTenancy.Layouts.MainLayoutComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Microsoft.AspNetCore.Identity;
+@using MultiTenancy.Models
+@using MultiTenancy.Pages
+<RadzenDialog />
+<RadzenNotification />
+<RadzenTooltip />
+<RadzenContextMenu />
+
+<RadzenLayout>
+  <ChildContent>
+    <RadzenHeader>
+      <ChildContent>
+        <div class="row justify-content-start align-items-center">
+          <div class="col-6 d-flex align-items-center">
+            <RadzenSidebarToggle Click="@SidebarToggle0Click">
+            </RadzenSidebarToggle>
+            <RadzenLabel Text="MultiTenancy">
+            </RadzenLabel>
+          </div>
+          <div class="col-6 text-right">
+            <RadzenProfileMenu Visible="@(Security.IsAuthenticated())" Click="@Profilemenu0Click">
+              <ChildContent>
+                <RadzenProfileMenuItem Path="profile" Icon="settings" Text="Profile" Visible="@(Security.IsInRole(new string[]{"Authenticated"}) || Security.User?.Name == "tenantsadmin")">
+                </RadzenProfileMenuItem>
+                <RadzenProfileMenuItem Path="application-users" Icon="person" Text="Users" Visible="@(Security.IsInRole(new string[]{"Authenticated"}) && Globals.Tenant != null)">
+                </RadzenProfileMenuItem>
+                <RadzenProfileMenuItem Path="application-roles" Icon="security" Text="Roles" Visible="@(Security.IsInRole(new string[]{"Authenticated"}) && Globals.Tenant != null)">
+                </RadzenProfileMenuItem>
+                <RadzenProfileMenuItem Path="application-tenants" Icon="account_balance_wallet" Text="Tenants" Visible="@(Security.User?.Name == "tenantsadmin")">
+                </RadzenProfileMenuItem>
+                <RadzenProfileMenuItem Text="Logout" Value="Logout" Icon="power_settings_new">
+                </RadzenProfileMenuItem>
+              </ChildContent>
+              <Template>
+                <RadzenGravatar Email="@(Security.User?.Name)">
+                </RadzenGravatar>
+              </Template>
+            </RadzenProfileMenu>
+          </div>
+        </div>
+      </ChildContent>
+    </RadzenHeader>
+    <RadzenBody @ref="body0">
+      <ChildContent>
+        <RadzenContentContainer Name="main">
+        @Body
+        </RadzenContentContainer>
+      </ChildContent>
+    </RadzenBody>
+    <RadzenSidebar @ref="sidebar0">
+      <ChildContent>
+        <RadzenPanelMenu style="height: 100%">
+          <ChildContent>
+            <RadzenPanelMenuItem Path="application-tenants" Text="Tenants" Visible="@(Security.User?.Name == "tenantsadmin")">
+            </RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Path="application-users" Text="Users" Visible="@(Security.IsInRole(new string[]{"Authenticated"}) && Globals.Tenant != null)">
+            </RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Path="application-roles" Text="Roles" Visible="@(Security.IsInRole(new string[]{"Authenticated"}) && Globals.Tenant != null)">
+            </RadzenPanelMenuItem>
+          </ChildContent>
+        </RadzenPanelMenu>
+      </ChildContent>
+    </RadzenSidebar>
+    <RadzenFooter>
+      <ChildContent>
+        <RadzenLabel Text="MultiTenancy, Copyright Ⓒ 2022">
+        </RadzenLabel>
+      </ChildContent>
+    </RadzenFooter>
+  </ChildContent>
+</RadzenLayout>
